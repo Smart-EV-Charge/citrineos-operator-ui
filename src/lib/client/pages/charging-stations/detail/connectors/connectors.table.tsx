@@ -9,12 +9,15 @@ import React from 'react';
 interface ConnectorsTableProps {
   connectors: ConnectorDto[];
   onEdit: (connector: ConnectorDto) => void;
-  onAdd: () => void;
+  onDelete: (connector: ConnectorDto) => void;
+  isDeleting?: boolean;
 }
 
 export const ConnectorsTable: React.FC<ConnectorsTableProps> = ({
   connectors,
   onEdit,
+  onDelete,
+  isDeleting = false,
 }) => {
   const formatPower = (value: number | undefined) =>
     value
@@ -59,13 +62,23 @@ export const ConnectorsTable: React.FC<ConnectorsTableProps> = ({
                   {formatPower(connector.maximumPowerWatts || undefined)}
                 </td>
                 <td className="px-4 py-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onEdit(connector)}
-                  >
-                    Edit
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onEdit(connector)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      disabled={isDeleting}
+                      onClick={() => onDelete(connector)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))
